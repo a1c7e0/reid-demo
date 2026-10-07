@@ -1,0 +1,17 @@
+services:
+  reid-gallery:
+    build: .
+    image: reid-gallery:latest
+    container_name: reid-gallery
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ./data:/data          # photos, thumbnails, sqlite db
+      - ./import:/import:ro   # drop photos here, then use "Scan dir"
+    environment:
+      SCAN_PATH: ""           # set to /import to auto-scan at startup
+      PERSON_CONF: "0.40"
+      FACE_CONF: "0.50"
+      FACE_GROUP_SIM: "0.42"
+      BODY_ASSIGN_T: "0.62"
+    restart: unless-stopped

@@ -1,0 +1,75 @@
+# Data and weights never enter the repository. Everything here is
+# re-downloadable - see docs/DATA-SOURCES.md for the links.
+testsets/
+data/
+import/
+vendor/
+
+# models are fetched and hash-checked at build time
+*.onnx
+*.pth
+*.pt
+*.ckpt
+*.tflite
+*.engine
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+
+# datasets and archives
+*.pkl
+*.pickle
+*.npz
+*.npy
+*.h5
+*.hdf5
+*.parquet
+*.arrow
+*.bin
+
+# media (the app stores these at runtime)
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.heic
+*.gif
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# generated / runtime
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+node_modules/
+.venv/
+venv/
+env/
+
+# database and thumbnails
+*.db
+*.sqlite
+*.sqlite3
+thumbs/
+display/
+
+# editor / OS / logs
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+*.log
+nohup.out
+
+# benchmark output
+out/
+*.tmp

@@ -1,0 +1,70 @@
+# Keep the build context small and make sure no dataset or weight sneaks into
+# an image layer. The Dockerfile copies only app/ and scripts/ explicitly, so
+# everything below is belt-and-braces - but a stray COPY would otherwise bake
+# gigabytes of test data into a layer that can never be removed.
+
+.git
+.gitignore
+.dockerignore
+
+# datasets and photo stores: gigabytes, never needed to build
+testsets/
+data/
+import/
+vendor/
+out/
+
+# documentation is for humans, not the image
+docs/
+*.md
+
+# weights are fetched and hash-checked inside the build
+*.onnx
+*.pth
+*.pt
+*.ckpt
+*.tflite
+*.engine
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.pkl
+*.npz
+*.npy
+*.h5
+
+# media and databases
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.heic
+*.gif
+*.mp4
+*.mov
+*.db
+*.sqlite
+*.sqlite3
+
+# tooling caches
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+node_modules/
+.venv/
+venv/
+env/
+
+# editor / OS / logs
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+nohup.out
+*.tmp
