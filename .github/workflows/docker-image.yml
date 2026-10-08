@@ -1,9 +1,14 @@
 name: Docker Image CI
 
+# DISABLED for automatic use: this workflow is kept as the reference copy of
+# a1c7e0/cgit-docker's pipeline, but it no longer fires on tags. The image is
+# currently built and pushed by hand, amd64 only - the arm64 job was removed
+# because it is emulated under QEMU and this image installs PyTorch, downloads
+# ~1 GB of models and exports ONNX at build time, which is far too heavy to
+# emulate. Run it by hand (Actions -> Docker Image CI -> Run workflow) if a
+# published build is ever wanted again.
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,23 +19,12 @@ env:
 
 jobs:
   docker:
-    name: Build ${{ matrix.arch }}
+    name: Build amd64
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        include:
-          - platform: linux/amd64
-            arch: amd64
-          - platform: linux/arm64
-            arch: arm64
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -53,40 +47,13 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: ${{ matrix.platform }}
+          platforms: linux/amd64
           push: true
           pull: true
           labels: ${{ steps.meta.outputs.labels }}
           tags: |
-            ${{ env.IMAGE_NAME }}:${{ github.ref_name }}-${{ matrix.arch }}
-            ${{ env.IMAGE_NAME }}:latest-${{ matrix.arch }}
-          cache-from: type=gha,scope=${{ matrix.platform }}
-          cache-to: type=gha,mode=max,scope=${{ matrix.platform }}
+            ${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+            ${{ env.IMAGE_NAME }}:latest
+          cache-from: type=gha,scope=linux/amd64
+          cache-to: type=gha,mode=max,scope=linux/amd64
           provenance: false
-
-  manifest:
-    name: Create multi-arch manifest
-    needs: docker
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Login to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create manifests
-        run: |
-          docker buildx imagetools create \
-            -t $IMAGE_NAME:${GITHUB_REF_NAME} \
-            $IMAGE_NAME:${GITHUB_REF_NAME}-amd64 \
-            $IMAGE_NAME:${GITHUB_REF_NAME}-arm64
-
-          docker buildx imagetools create \
-            -t $IMAGE_NAME:latest \
-            $IMAGE_NAME:latest-amd64 \
-            $IMAGE_NAME:latest-arm64
-        env:
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
