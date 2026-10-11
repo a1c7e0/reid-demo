@@ -227,3 +227,14 @@ clustering objective is deliberately asymmetric — mixing two people in one
 cluster is heavily penalised, splitting one person across clusters is cheap.
 In a photo library a merge is a lie about who someone is; a split is just a
 mess you can fix with one click.
+
+---
+
+## License
+
+[MIT](LICENSE). Free to use, modify and redistribute — including commercially
+— as long as the copyright notice stays.
+
+Note that the models and datasets this builds against have their own terms:
+see [`docs/DATA-SOURCES.md`](docs/DATA-SOURCES.md) for each source. This
+license covers the code and the documentation here, not those.

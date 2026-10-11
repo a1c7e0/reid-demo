@@ -162,3 +162,13 @@ python3 scripts/eval/review_order_bench.py
 | [`prototypes-survey.md`](docs/prototypes-survey.md) | UI 调研笔记 |
 
 两条贯穿始终的规则：**一切只在公开数据上评测**；聚类目标**刻意不对称**——两个人混进一个簇重罚，一个人拆成多个簇无所谓。在相册里，混了是**对"这是谁"撒谎**，拆了只是**一键能修的乱**。
+
+---
+
+## 许可证
+
+[MIT](LICENSE)。可自由使用、修改、再分发（含商用），保留版权说明即可。
+
+注意本项目所依赖的**模型和数据集各有自己的条款**，来源见
+[`docs/DATA-SOURCES.md`](docs/DATA-SOURCES.md)。本许可证只覆盖这里的代码和文档，
+不覆盖那些模型与数据。
